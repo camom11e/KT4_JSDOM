@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель с фигурами</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        .control-panel {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        #addCircle {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        #addSquare {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        #clearAll {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .shapes-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            min-height: 200px;
+            padding: 20px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+        }
+        
+        .circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .circle:hover {
+            transform: scale(1.1);
+        }
+        
+        .square {
+            width: 80px;
+            height: 80px;
+            background-color: #2196F3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .square:hover {
+            transform: rotate(15deg);
+        }
+        
+        .counter {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Добавление фигур</h1>
+        
+        <div class="control-panel">
+            <button id="addCircle">Добавить круг</button>
+            <button id="addSquare">Добавить квадрат</button>
+            <button id="clearAll">Очистить всё</button>
+        </div>
+        
+        <div class="shapes-container" id="shapesContainer">
+            <!-- Здесь будут появляться фигуры -->
+        </div>
+        
+        <div class="counter">
+            Всего фигур: <span id="counter">0</span>
+        </div>
+    </div>
+
+    <script>
+        // Получаем элементы DOM
+        const addCircleBtn = document.getElementById('addCircle');
+        const addSquareBtn = document.getElementById('addSquare');
+        const clearAllBtn = document.getElementById('clearAll');
+        const shapesContainer = document.getElementById('shapesContainer');
+        const counterElement = document.getElementById('counter');
+        
+        // Счётчик фигур
+        let shapeCount = 0;
+        
+        // Функция для обновления счётчика
+        function updateCounter() {
+            counterElement.textContent = shapeCount;
+        }
+        
+        // Функция для добавления круга
+        function addCircle() {
+            const circle = document.createElement('div');
+            circle.className = 'circle';
+            circle.textContent = 'Круг';
+            
+            // Добавляем случайное позиционирование
+            const randomX = Math.floor(Math.random() * 20);
+            const randomY = Math.floor(Math.random() * 20);
+            circle.style.marginLeft = `${randomX}px`;
+            circle.style.marginTop = `${randomY}px`;
+            
+            shapesContainer.appendChild(circle);
+            shapeCount++;
+            updateCounter();
+        }
+        
+        // Функция для добавления квадрата
+        function addSquare() {
+            const square = document.createElement('div');
+            square.className = 'square';
+            square.textContent = 'Квадрат';
+            
+            // Добавляем случайное позиционирование
+            const randomX = Math.floor(Math.random() * 20);
+            const randomY = Math.floor(Math.random() * 20);
+            square.style.marginLeft = `${randomX}px`;
+            square.style.marginTop = `${randomY}px`;
+            
+            shapesContainer.appendChild(square);
+            shapeCount++;
+            updateCounter();
+        }
+        
+        // Функция для очистки всех фигур
+        function clearAllShapes() {
+            shapesContainer.innerHTML = '';
+            shapeCount = 0;
+            updateCounter();
+        }
+        
+        // Добавляем обработчики событий
+        addCircleBtn.addEventListener('click', addCircle);
+        addSquareBtn.addEventListener('click', addSquare);
+        clearAllBtn.addEventListener('click', clearAllShapes);
+        
+        // Инициализируем счётчик
+        updateCounter();
+    </script>
+</body>
+</html>
