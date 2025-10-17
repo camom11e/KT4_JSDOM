@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Простой слайдер</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        
+        .slider-container {
+            width: 300px;
+            position: relative;
+        }
+        
+        .slider-track {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .slider-fill {
+            height: 100%;
+            background: #4CAF50;
+            border-radius: 4px;
+            width: 50%;
+        }
+        
+        .slider-thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid #4CAF50;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .slider-value:after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slider-track" id="slider">
+            <div class="slider-fill" id="fill"></div>
+            <div class="slider-thumb" id="thumb"></div>
+            <div class="slider-value" id="value">50</div>
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById('slider');
+        const thumb = document.getElementById('thumb');
+        const fill = document.getElementById('fill');
+        const value = document.getElementById('value');
+        
+        let isDragging = false;
+        
+        // Начало перетаскивания
+        thumb.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+        
+        // Клик по треку
+        slider.addEventListener('click', (e) => {
+            updateSlider(e.clientX);
+        });
+        
+        // Перемещение мыши
+        function onMouseMove(e) {
+            if (isDragging) {
+                updateSlider(e.clientX);
+            }
+        }
+        
+        // Конец перетаскивания
+        function onMouseUp() {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+        
+        // Обновление слайдера
+        function updateSlider(clientX) {
+            const rect = slider.getBoundingClientRect();
+            let x = clientX - rect.left;
+            
+            // Ограничиваем в пределах слайдера
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+            
+            // Вычисляем значение (0-100)
+            const percent = Math.round((x / rect.width) * 100);
+            
+            // Обновляем отображение
+            thumb.style.left = `${percent}%`;
+            fill.style.width = `${percent}%`;
+            value.textContent = percent;
+        }
+    </script>
+</body>
+</html>
